@@ -1,0 +1,8 @@
+/cocos2d/
+/bin/
+/linux-build/
+/proj.android/bin/
+/proj.android/gen/
+/proj.android/libs/
+/proj.android/obj/
+/proj.android/.settings/
