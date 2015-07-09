@@ -58,6 +58,11 @@
 			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/Classes</locationURI>
 		</link>
 		<link>
+			<name>Resources</name>
+			<type>2</type>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/Resources</locationURI>
+		</link>
+		<link>
 			<name>cocos2d</name>
 			<type>2</type>
 			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/cocos2d</locationURI>
