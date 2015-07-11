@@ -14,6 +14,16 @@ Step 2:
 * number of cards, time length for flipping is 2 factors of difficulty  
 
 
+## Ideas
+
+1. Initialize with a 'step 1' game, X cards, Y seconds to remember (player could choose start to skip waiting period) and Z seconds to select and place cards in order.
++ According to player's score in the first game, calculate the difficulty factor that the next game should be created with.
++ If player get very high score, that means the difficulty of current game is too low for him(her), so we could increase the difficulty factor more levels.
++ The final goal is to create games that kids need to try his/her best to solve it, nor he/she would be failed.
+
+
+
+
 #孩子，记住它
 锻炼孩子的记忆力
 
@@ -28,3 +38,9 @@ Step 2:
 
 * 经典的记忆游戏：显示一组背面朝上的卡片，翻转出相同的两张方可消除一对卡片
 * 卡片的数量、翻卡片的时间长短是2个难度因子
+
+## 随想
+1. 初始化一局游戏，有X张卡片，Y秒用于记忆(孩子可以选择掠过记忆的等待时间）以及Z秒用于恢复正确的排列
+2. 根据孩子的表现来计算游戏的困难系数
+3. 如果孩子表现非常出色，说明当前的难度远低于他（她）的能力，可以适当跨级调高难度
+4. 最终目的是要创建出让孩子不尽最大努力无法通过的游戏
