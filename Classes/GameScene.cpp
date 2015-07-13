@@ -28,4 +28,5 @@ bool GameScene::init() {
 	Size visibleSize = director->getVisibleSize();
 	Vec2 origin = director->getVisibleOrigin();
 
+	return true;
 }
