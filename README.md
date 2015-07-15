@@ -21,7 +21,11 @@ Step 2:
 + If player get very high score, that means the difficulty of current game is too low for him(her), so we could increase the difficulty factor more levels.
 + The final goal is to create games that kids need to try his/her best to solve it, nor he/she would be failed.
 
-
+## Time factor
+1. Player has 5 seconds for each card in remember period
+2. Player has 3 seconds for each card in represent period
+3. Guessing player should use 2.5 seconds for each card on average.
+4. Guessing player should use 1.5 second for each card on average.
 
 
 #孩子，记住它
