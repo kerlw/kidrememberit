@@ -16,6 +16,7 @@ class GameController: public Ref {
 public:
 	enum class SceneType {
 		eMainScene,
+		eGameScene,
 	};
 
 public:

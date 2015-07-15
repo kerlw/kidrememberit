@@ -77,6 +77,7 @@ bool MainScene::init() {
 }
 
 void MainScene::onMenuPlayClicked(Ref* pSender) {
+	GameController::getInstance()->enterScene(GameController::SceneType::eGameScene);
 }
 
 void MainScene::onMenuExitClicked(Ref* pSender) {
