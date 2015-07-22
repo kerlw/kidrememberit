@@ -7,6 +7,7 @@
 
 #include "GameController.h"
 #include "MainScene.h"
+#include "GameScene.h"
 
 static GameController* s_pGameController;
 
@@ -35,6 +36,9 @@ void GameController::enterScene(const SceneType& eType) {
 	switch (eType) {
 	case SceneType::eMainScene:
 		layer = MainScene::create();
+		break;
+	case SceneType::eGameScene:
+		layer = GameScene::create();
 		break;
 	}
 
