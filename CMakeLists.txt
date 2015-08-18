@@ -118,6 +118,7 @@ set(GAME_SRC
   Classes/MainScene.cpp
   Classes/GameScene.cpp
   Classes/GameController.cpp
+  Classes/Card.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
@@ -126,6 +127,7 @@ set(GAME_HEADERS
   Classes/MainScene.h
   Classes/GameScene.h
   Classes/GameController.h
+  Classes/Card.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 
