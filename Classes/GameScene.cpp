@@ -87,4 +87,6 @@ void GameScene::showGameBoard() {
 
 	card->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	this->addChild(card);
+
+	card->setClickable(true);
 }
