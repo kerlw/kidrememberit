@@ -8,6 +8,7 @@
 #include "GameScene.h"
 #include "Const.h"
 #include "GameController.h"
+#include "Card.h"
 
 #include "ui/UIButton.h"
 
@@ -71,8 +72,19 @@ void GameScene::startCountingCallback(float tm) {
 		m_pLabelCounting->setString(COUNTING_STRING[GO_INDEX]);
 		m_pLabelCounting->setSystemFontSize(300);
 	} else {
-		m_pLabelCounting->setVisible(false);
 		unschedule(schedule_selector(GameScene::startCountingCallback));
-		//TODO show the game board
+		m_pLabelCounting->removeFromParent();
+
+		showGameBoard();
 	}
+}
+
+void GameScene::showGameBoard() {
+	auto card = Card::create(Card::CardType::CARD_0, true);
+	auto director = Director::getInstance();
+	Size visibleSize = director->getVisibleSize();
+	Vec2 origin = director->getVisibleOrigin();
+
+	card->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	this->addChild(card);
 }

@@ -26,6 +26,8 @@ protected:
 	void showStartCounting();
 	void startCountingCallback(float tm);
 
+	void showGameBoard();
+
 protected:
 	Label* m_pLabelCounting;
 	int m_iCounter;

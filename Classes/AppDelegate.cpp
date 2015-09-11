@@ -1,6 +1,8 @@
 #include "AppDelegate.h"
 #include "GameController.h"
 
+#include "Const.h"
+
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {
@@ -43,6 +45,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
+
+    auto cache = SpriteFrameCache::getInstance();
+    cache->addSpriteFramesWithFile(RES_FILE_PLIST, RES_FILE_PNG);
 
     register_all_packages();
 
