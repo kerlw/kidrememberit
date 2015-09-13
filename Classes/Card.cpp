@@ -30,17 +30,19 @@ Card* Card::create(const CardType& type, bool front) {
 }
 
 Card::Card()
-	: m_pFront(nullptr), m_pBack(nullptr) {
+	: m_pFront(nullptr), m_pBack(nullptr),
+	  m_pAnimIn(nullptr), m_pAnimOut(nullptr),
+	  m_bFront(false) {
 }
 
 Card::~Card() {
-	if (m_pFront) {
-		m_pFront->stopAllActions();
-	}
-
-	if (m_pBack) {
-		m_pBack->stopAllActions();
-	}
+//	if (m_pFront) {
+//		m_pFront->stopAllActions();
+//	}
+//
+//	if (m_pBack) {
+//		m_pBack->stopAllActions();
+//	}
 
 	if (m_pAnimIn)
 		m_pAnimIn->release();
@@ -53,7 +55,6 @@ bool Card::init(const CardType& type, bool front) {
 	this->setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 	this->ignoreAnchorPointForPosition(false);
 	this->setAnchorPoint(Vec2(0.5, 0.5));
-//	this->
 
 	// init front & back sprite
 	auto cache = SpriteFrameCache::getInstance();
@@ -107,8 +108,8 @@ void Card::flipCard() {
 	if (!m_pFront || !m_pBack)
 		return;
 
-	m_pFront->stopAllActions();
-	m_pBack->stopAllActions();
+//	m_pFront->stopAllActions();
+//	m_pBack->stopAllActions();
 
 	if (m_bFront) {
 		m_pFront->runAction(m_pAnimOut);
