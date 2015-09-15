@@ -26,4 +26,6 @@ static const char* const FRAME_NAME[] = {
 static const int FRAME_INDEX_CARD0 = 9;
 static const int FRAME_INDEX_CARD1 = 10;
 
+static const int CARD_TYPE_COUNT = 9;
+
 #endif /* CONST_H_ */

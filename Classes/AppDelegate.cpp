@@ -3,6 +3,8 @@
 
 #include "Const.h"
 
+#include <time.h>
+
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {
@@ -32,6 +34,9 @@ static int register_all_packages()
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
+	// initialize random seed
+		srand(time(0));
+
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();

@@ -10,29 +10,63 @@
 
 #include "cocos2d.h"
 
+#include <stdint.h>
+
 USING_NS_CC;
+
+enum class PuzzleType {
+	PT_REMEMBER_AND_REPRESENT,
+	PT_REMEMBER_AND_PAIREFLIP,
+};
+
+class PuzzleData : public Ref {
+public:
+	virtual ~PuzzleData() {
+		if (data)
+			delete data;
+	}
+
+	static PuzzleData* create(const uint16_t& score);
+	void resetScore(const uint16_t& score);
+
+private:
+	bool init(const uint16_t& score);
+	PuzzleData() : data(nullptr) {}
+
+public:
+	PuzzleType type;
+	uint16_t size;
+	uint8_t *data;
+	float rem_time;
+	float rep_time;
+};
+
 
 class Puzzle : public Ref {
 public:
-	enum class PuzzleType {
-
-	};
 
 	virtual ~Puzzle();
 
-	bool init();
-
 	CREATE_FUNC(Puzzle);
+	bool init() {
+		return true;
+	}
 
-	void generate(const PuzzleType& type, void* param);
+	void setPuzzleData(PuzzleData *data) {
+		m_pData = data;
+	}
+
+	PuzzleData* getPuzzleData() {
+		return m_pData;
+	}
+
+	bool generate();
 
 private:
 	Puzzle();
 
 private:
-	PuzzleType m_type;
-
-	void* m_pData;
+	PuzzleData* m_pData;
 
 };
 

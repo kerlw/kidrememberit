@@ -62,7 +62,7 @@ void GameScene::startCountingCallback(float tm) {
 	if (m_fTimeCounter < 3.0f) {
 		int index = (int) m_fTimeCounter;
 		int size = ((int)(m_fTimeCounter * 100)) % 100 * 3;
-		log("tm is %f, index is %d, size is %d", m_fTimeCounter, index, size);
+//		log("tm is %f, index is %d, size is %d", m_fTimeCounter, index, size);
 		if (index != m_iCounter) {
 			m_iCounter = index;
 			m_pLabelCounting->setString(COUNTING_STRING[m_iCounter]);
