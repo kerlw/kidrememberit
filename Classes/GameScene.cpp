@@ -9,6 +9,7 @@
 #include "Const.h"
 #include "GameController.h"
 #include "Card.h"
+#include "Puzzle.h"
 
 #include "ui/UIButton.h"
 
@@ -37,7 +38,31 @@ bool GameScene::init() {
 	m_pLabelCounting->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	this->addChild(m_pLabelCounting);
 
+	uint16_t score = UserDefault::getInstance()->getIntegerForKey("player"); //TODO player should be nickname of player
+	auto data = PuzzleData::create(score);
+	auto puzzle = Puzzle::create();
+	puzzle->setPuzzleData(data);
+	if (!puzzle->generate()) {
+		return false;	//TODO give out error tips.
+	}
+
+	m_vctCards.clear();
+	for (int i = 0; i < data->size; i++) {
+		m_vctCards.push_back(Card::create((Card::CardType)data->data[i], false));
+	}
+
+	initGameBoardLayout(visibleSize.width, visibleSize.height);
+
 	return true;
+}
+
+void GameScene::initGameBoardLayout(int w, int h) {
+#define MAX_COLUMN 7
+	int rows = m_vctCards.size() / MAX_COLUMN;
+	int row = 0;
+	for (int i = 0; i < m_vctCards.size(); i++) {
+		int col = i % MAX_COLUMN;
+	}
 }
 
 void GameScene::onEnterTransitionDidFinish() {

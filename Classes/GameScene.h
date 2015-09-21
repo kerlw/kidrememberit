@@ -10,6 +10,10 @@
 
 #include "cocos2d.h"
 
+#include <vector>
+
+class Card;
+
 USING_NS_CC;
 
 class GameScene: public Layer {
@@ -23,6 +27,8 @@ public:
 	virtual void onEnterTransitionDidFinish() override;
 
 protected:
+	void initGameBoardLayout(int w, int h);
+
 	void showStartCounting();
 	void startCountingCallback(float tm);
 
@@ -32,6 +38,8 @@ protected:
 	Label* m_pLabelCounting;
 	int m_iCounter;
 	float m_fTimeCounter;
+
+	std::vector<Card*> m_vctCards;
 };
 
 #endif /* GAMESCENE_H_ */

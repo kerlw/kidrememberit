@@ -25,7 +25,7 @@ PuzzleData *PuzzleData::create(const uint16_t& score) {
 }
 
 void PuzzleData::resetScore(const uint16_t& score) {
-	//TODO ...
+//	this->score = score;
 }
 
 bool PuzzleData::init(const uint16_t& score) {

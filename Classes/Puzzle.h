@@ -15,8 +15,8 @@
 USING_NS_CC;
 
 enum class PuzzleType {
-	PT_REMEMBER_AND_REPRESENT,
-	PT_REMEMBER_AND_PAIREFLIP,
+	PT_REMEMBER_AND_REPRESENT = 0,
+	PT_REMEMBER_AND_PAIREFLIP = 1,
 };
 
 class PuzzleData : public Ref {
