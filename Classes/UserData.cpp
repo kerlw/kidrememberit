@@ -11,6 +11,15 @@
 
 USING_NS_CC;
 
+static UserData* _instance = nullptr;
+
+UserData* UserData::getInstance() {
+	if (!_instance) {
+		_instance = new UserData();
+	}
+	return _instance;
+}
+
 UserData::UserData() {
 }
 

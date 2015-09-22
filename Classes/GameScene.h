@@ -34,6 +34,8 @@ protected:
 
 	void showGameBoard();
 
+	static const int kMaxColumns;
+
 protected:
 	Label* m_pLabelCounting;
 	int m_iCounter;

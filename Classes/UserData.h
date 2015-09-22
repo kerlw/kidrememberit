@@ -15,6 +15,8 @@ class UserData {
 public:
 	virtual ~UserData();
 
+	static UserData* getInstance();
+
 	void load();
 	void save();
 

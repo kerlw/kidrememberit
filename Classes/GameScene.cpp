@@ -16,6 +16,8 @@
 static const char* COUNTING_STRING[] = { "3", "2", "1", "Go!" };
 static const int GO_INDEX = 3;
 
+const int GameScene::kMaxColumns = 7;
+
 GameScene::GameScene()
 		: m_pLabelCounting(nullptr) {
 }
@@ -57,11 +59,28 @@ bool GameScene::init() {
 }
 
 void GameScene::initGameBoardLayout(int w, int h) {
-#define MAX_COLUMN 7
-	int rows = m_vctCards.size() / MAX_COLUMN;
+	int cardCounts = m_vctCards.size();
+	int cols = cardCounts > kMaxColumns ? kMaxColumns : cardCounts;
+	int rows = (cardCounts + kMaxColumns - 1) / kMaxColumns;
+
+	auto card = m_vctCards.front();
+	if (!card)
+		return;
+
+	const Size cardSize = card->getContentSize();
+
+	int cellWidth = (w - 2 * cardSize.width) / cols;
+	int cellHeight = (h - 2 * cardSize.height) / rows;
+
 	int row = 0;
 	for (int i = 0; i < m_vctCards.size(); i++) {
-		int col = i % MAX_COLUMN;
+		int row = i / kMaxColumns;
+		int col = i % kMaxColumns;
+		int x = cardSize.width + cellWidth * col + cellWidth / 2;
+		int y = h - (cardSize.height + cellHeight * row + cellWidth / 2);
+		m_vctCards[i]->setPosition(Vec2(x, y));
+
+		this->addChild(m_vctCards[i], -1);
 	}
 }
 
@@ -105,13 +124,9 @@ void GameScene::startCountingCallback(float tm) {
 }
 
 void GameScene::showGameBoard() {
-	auto card = Card::create(Card::CardType::CARD_0, true);
-	auto director = Director::getInstance();
-	Size visibleSize = director->getVisibleSize();
-	Vec2 origin = director->getVisibleOrigin();
+	for (int i = 0; i < m_vctCards.size(); i++) {
+		m_vctCards[i]->flipCard();
+	}
 
-	card->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-	this->addChild(card);
-
-	card->setClickable(true);
+	//TODO start time counting.
 }
