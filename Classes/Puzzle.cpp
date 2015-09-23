@@ -48,8 +48,7 @@ Puzzle::Puzzle() : m_pData(nullptr) {
 }
 
 Puzzle::~Puzzle() {
-	if (m_pData)
-		m_pData->release();
+	CC_SAFE_RELEASE(m_pData);
 }
 
 

@@ -54,6 +54,7 @@ public:
 
 	void setPuzzleData(PuzzleData *data) {
 		m_pData = data;
+		CC_SAFE_RETAIN(m_pData);
 	}
 
 	PuzzleData* getPuzzleData() {
