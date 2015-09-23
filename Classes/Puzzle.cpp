@@ -57,7 +57,7 @@ bool Puzzle::generate() {
 		return false;
 
 	for (int i = 0; i < m_pData->size; i++)
-		m_pData->data[i] = rand() % (CARD_TYPE_COUNT + 1);
+		m_pData->data[i] = rand() % CARD_TYPE_COUNT;
 
 	return true;
 }
