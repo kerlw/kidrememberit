@@ -51,6 +51,7 @@ Card::~Card() {
 }
 
 bool Card::init(const CardType& type, bool front) {
+	m_eType = type;
 	// set touch mode to ONE_BY_ONE
 	this->setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 	this->ignoreAnchorPointForPosition(false);
@@ -143,4 +144,8 @@ void Card::onTouchEnded(Touch *touch, Event *unusedEvent) {
 }
 
 void Card::onTouchCancelled(Touch *touch, Event *unusedEvent) {
+}
+
+Card* Card::clone() {
+	return Card::create(m_eType, m_bFront);
 }

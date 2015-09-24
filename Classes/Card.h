@@ -42,6 +42,8 @@ public:
     virtual void onTouchEnded(Touch *touch, Event *unusedEvent) override;
     virtual void onTouchCancelled(Touch *touch, Event *unusedEvent) override;
 
+    Card* clone();
+
 private:
 	Card();
 
@@ -52,6 +54,7 @@ private:
 	ActionInterval* m_pAnimIn;
 	ActionInterval* m_pAnimOut;
 
+	CardType m_eType;
 	bool m_bFront;
 
 	bool m_bTouchEnabled;

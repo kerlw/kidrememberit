@@ -25,12 +25,60 @@
 							</builder>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1247586445" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.393960064" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.2098608811" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/deprecated}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/2d}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/ui}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/base}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/3d}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/extensions}&quot;"/>
+									<listOptionValue builtIn="false" value="/usr/include/c++/4.9.2"/>
+									<listOptionValue builtIn="false" value="/usr/include"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1792426272" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="CC_DLL"/>
+									<listOptionValue builtIn="false" value="CC_TARGET_PLATFORM=CC_PLATFORM_ANDROID"/>
+								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1595199005" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.615116440" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.796891901" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/deprecated}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/2d}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/ui}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/base}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/3d}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/extensions}&quot;"/>
+									<listOptionValue builtIn="false" value="/usr/include/c++/4.9.2"/>
+									<listOptionValue builtIn="false" value="/usr/include"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.329194873" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="CC_DLL"/>
+									<listOptionValue builtIn="false" value="CC_TARGET_PLATFORM=CC_PLATFORM_ANDROID"/>
+								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1156618483" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.85492096" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.817871793" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/deprecated}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/2d}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/ui}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/base}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/cocos/3d}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/KidRememberIt/KidRememberIt/cocos2d/extensions}&quot;"/>
+									<listOptionValue builtIn="false" value="/usr/include/c++/4.9.2"/>
+									<listOptionValue builtIn="false" value="/usr/include"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1011198888" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="CC_DLL"/>
+									<listOptionValue builtIn="false" value="CC_TARGET_PLATFORM=CC_PLATFORM_ANDROID"/>
+								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.196631835" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 						</toolChain>
@@ -52,4 +100,5 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 </cproject>

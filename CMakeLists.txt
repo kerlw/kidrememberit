@@ -124,6 +124,7 @@ set(GAME_SRC
   Classes/MaskLayer.cpp
   Classes/Puzzle.cpp
   Classes/UserData.cpp
+  Classes/CardBar.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
@@ -136,6 +137,7 @@ set(GAME_HEADERS
   Classes/MaskLayer.h
   Classes/Puzzle.h
   Classes/UserData.h
+  Classes/CardBar.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 

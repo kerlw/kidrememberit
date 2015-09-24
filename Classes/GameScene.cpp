@@ -9,20 +9,30 @@
 #include "Const.h"
 #include "GameController.h"
 #include "Card.h"
+#include "CardBar.h"
 #include "Puzzle.h"
 
 #include "ui/UIButton.h"
 
-static const char* COUNTING_STRING[] = { "3", "2", "1", "Go!" };
-static const int GO_INDEX = 3;
+static const char* COUNTING_STRING[] = { "Ready~", "Go!" };
+static const int GO_INDEX = 1;
 
 const int GameScene::kMaxColumns = 7;
 
 GameScene::GameScene()
-		: m_pLabelCounting(nullptr) {
+		: m_pLabelCounting(nullptr), m_pCardBar(nullptr),
+		  m_pSelectedCard(nullptr), m_pPuzzle(nullptr) {
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	listener->onTouchMoved = CC_CALLBACK_2(GameScene::onTouchMoved, this);
+	listener->onTouchEnded = CC_CALLBACK_2(GameScene::onTouchEnded, this);
+	listener->onTouchCancelled = CC_CALLBACK_2(GameScene::onTouchCancelled, this);
+
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 }
 
 GameScene::~GameScene() {
+	CC_SAFE_RELEASE(m_pPuzzle);
 }
 
 bool GameScene::init() {
@@ -42,9 +52,13 @@ bool GameScene::init() {
 
 	uint16_t score = UserDefault::getInstance()->getIntegerForKey("player"); //TODO player should be nickname of player
 	auto data = PuzzleData::create(score);
-	auto puzzle = Puzzle::create();
-	puzzle->setPuzzleData(data);
-	if (!puzzle->generate()) {
+
+	m_pPuzzle = Puzzle::create();
+	CC_SAFE_RETAIN(m_pPuzzle);
+
+	m_pPuzzle->setPuzzleData(data);
+
+	if (!m_pPuzzle->generate()) {
 		return false;	//TODO give out error tips.
 	}
 
@@ -52,6 +66,15 @@ bool GameScene::init() {
 	for (int i = 0; i < data->size; i++) {
 		m_vctCards.push_back(Card::create((Card::CardType)data->data[i], false));
 	}
+
+	// create CardBar
+	m_pCardBar = CardBar::create();
+	m_pCardBar->setCardsGap(10);
+	m_pCardBar->setPadding(10, 10, 20, 20);
+	m_pCardBar->setCardsFlag(data->getCardBitMask());
+	m_pCardBar->setPosition(Vec2(visibleSize.width / 2, m_pCardBar->getContentSize().height / 2));
+	m_pCardBar->setVisible(false);
+	this->addChild(m_pCardBar);
 
 	initGameBoardLayout(visibleSize.width, visibleSize.height);
 
@@ -103,7 +126,7 @@ void GameScene::startCountingCallback(float tm) {
 		return;
 
 	m_fTimeCounter += tm;
-	if (m_fTimeCounter < 3.0f) {
+	if (m_fTimeCounter < 1.5f) {
 		int index = (int) m_fTimeCounter;
 		int size = ((int)(m_fTimeCounter * 100)) % 100 * 3;
 //		log("tm is %f, index is %d, size is %d", m_fTimeCounter, index, size);
@@ -112,7 +135,7 @@ void GameScene::startCountingCallback(float tm) {
 			m_pLabelCounting->setString(COUNTING_STRING[m_iCounter]);
 		}
 		m_pLabelCounting->setSystemFontSize(320 - size);
-	} else if (m_fTimeCounter <= 3.5f) {
+	} else if (m_fTimeCounter <= 2.0f) {
 		m_pLabelCounting->setString(COUNTING_STRING[GO_INDEX]);
 		m_pLabelCounting->setSystemFontSize(300);
 	} else {
@@ -128,5 +151,70 @@ void GameScene::showGameBoard() {
 		m_vctCards[i]->flipCard();
 	}
 
-	//TODO start time counting.
+	auto data = m_pPuzzle->getPuzzleData();
+
+	auto pt = ProgressTimer::create(Sprite::create("progressbar_fg.png"));
+	pt->setType(kCCProgressTimerTypeBar);
+	pt->setPosition(500, 30);
+	pt->setPercentage(100.0f);
+	pt->setMidpoint(Vec2(0, 0)); //- m_pProgressTimer->getContentSize().height / 2));
+	pt->setBarChangeRate(Vec2(1, 0));
+
+	this->addChild(pt, 1);
+
+	auto sc = Director::getInstance()->getScheduler();
+	sc->schedule([=](float delta) {
+		static float totalDelta = 0;
+		totalDelta += delta;
+		float left = data->rem_time - totalDelta;
+		if (left < 0)
+			left = 0;
+		pt->setPercentage(left * 100 / data->rem_time);
+
+		if (left <= 0) {
+			Director::getInstance()->getScheduler()->unschedule("tester", this);
+			this->onRememberTimerDone(0.0f);
+		}
+
+	}, this, 0.1f, false, "tester");
+}
+
+void GameScene::onRememberTimerDone(float left) {
+	//TODO flip cards or move cards out ??
+	for (int i = 0; i < m_vctCards.size(); i++) {
+		Card* card = m_vctCards[i];
+		card->flipCard();
+	}
+	m_pCardBar->setVisible(true);
+}
+
+bool GameScene::onTouchBegan(Touch *touch, Event *unused_event) {
+	Vec2 location = touch->getLocation();
+	if (m_pCardBar) {
+		auto card = m_pCardBar->cloneCardAtLocation(m_pCardBar->convertToNodeSpace(location));
+		if (!card)
+			return false;
+
+		m_pSelectedCard = card;
+		m_pSelectedCard->setPosition(location);
+		this->addChild(m_pSelectedCard);
+	}
+	return true;
+}
+
+void GameScene::onTouchMoved(Touch *touch, Event *unused_event) {
+	if (m_pSelectedCard) {
+		m_pSelectedCard->setPosition(touch->getLocation());
+	}
+}
+
+void GameScene::onTouchEnded(Touch *touch, Event *unused_event) {
+	if (m_pSelectedCard) {
+		this->removeChild(m_pSelectedCard);
+	}
+}
+void GameScene::onTouchCancelled(Touch *touch, Event *unused_event) {
+	if (m_pSelectedCard) {
+		this->removeChild(m_pSelectedCard);
+	}
 }

@@ -29,6 +29,14 @@ public:
 	static PuzzleData* create(const uint16_t& score);
 	void resetScore(const uint16_t& score);
 
+	uint16_t getCardBitMask() {
+		uint16_t ret = 0;
+		for (int i = 0; i < size; i++) {
+			ret |= (1 << data[i]);
+		}
+		return ret;
+	}
+
 private:
 	bool init(const uint16_t& score);
 	PuzzleData() : data(nullptr) {}

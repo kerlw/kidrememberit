@@ -13,6 +13,8 @@
 #include <vector>
 
 class Card;
+class CardBar;
+class Puzzle;
 
 USING_NS_CC;
 
@@ -24,6 +26,11 @@ public:
 	CREATE_FUNC(GameScene);
 	virtual bool init() override;
 
+    virtual bool onTouchBegan(Touch *touch, Event *unused_event) override;
+	virtual void onTouchMoved(Touch *touch, Event *unused_event) override;
+	virtual void onTouchEnded(Touch *touch, Event *unused_event) override;
+	virtual void onTouchCancelled(Touch *touch, Event *unused_event) override;
+
 	virtual void onEnterTransitionDidFinish() override;
 
 protected:
@@ -34,12 +41,19 @@ protected:
 
 	void showGameBoard();
 
+	void onRememberTimerDone(float left);
+	void onRepresentTimerDone(float left);
+
 	static const int kMaxColumns;
 
 protected:
 	Label* m_pLabelCounting;
+	CardBar* m_pCardBar;
+	Card* m_pSelectedCard;
+
 	int m_iCounter;
 	float m_fTimeCounter;
+	Puzzle* m_pPuzzle;
 
 	std::vector<Card*> m_vctCards;
 };
