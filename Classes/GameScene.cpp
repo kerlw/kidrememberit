@@ -20,8 +20,8 @@ static const int GO_INDEX = 1;
 const int GameScene::kMaxColumns = 7;
 
 GameScene::GameScene()
-		: m_pLabelCounting(nullptr), m_pCardBar(nullptr),
-		  m_pSelectedCard(nullptr), m_pPuzzle(nullptr) {
+		: m_pLabelCounting(nullptr), m_pProgressTimer(nullptr), m_pCardBar(nullptr),
+		  m_pSelectedCard(nullptr), m_pPuzzle(nullptr), m_eTimerType(UNKNONW_TIMER) {
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
 	listener->onTouchMoved = CC_CALLBACK_2(GameScene::onTouchMoved, this);
@@ -50,6 +50,19 @@ bool GameScene::init() {
 	m_pLabelCounting->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	this->addChild(m_pLabelCounting);
 
+	//back menu item
+    auto backItem = MenuItemImage::create("back0.png", "back1.png",
+                                           CC_CALLBACK_1(GameScene::menuBackCallback, this));
+
+	backItem->setPosition(Vec2(origin.x + backItem->getContentSize().width/2 + 10,
+                                origin.y + visibleSize.height - 10 - backItem->getContentSize().height/2));
+
+
+    // create menu, it's an autorelease object
+    auto menu = Menu::create(backItem, NULL);
+    menu->setPosition(Vec2::ZERO);
+    this->addChild(menu, 1);
+
 	uint16_t score = UserDefault::getInstance()->getIntegerForKey("player"); //TODO player should be nickname of player
 	auto data = PuzzleData::create(score);
 
@@ -67,18 +80,32 @@ bool GameScene::init() {
 		m_vctCards.push_back(Card::create((Card::CardType)data->data[i], false));
 	}
 
+	// create count down timer progress bar, TODO : create a new ProgressBar class
+	m_pProgressTimer = ProgressTimer::create(Sprite::create("progressbar_fg.png"));
+	m_pProgressTimer->setType(kCCProgressTimerTypeBar);
+	m_pProgressTimer->setPosition(visibleSize.width / 2, visibleSize.height - m_pProgressTimer->getContentSize().height);
+	m_pProgressTimer->setPercentage(100.0f);
+	m_pProgressTimer->setMidpoint(Vec2(0, 0));
+	m_pProgressTimer->setBarChangeRate(Vec2(1, 0));
+	m_pProgressTimer->setVisible(false);
+	this->addChild(m_pProgressTimer, 1);
+
 	// create CardBar
 	m_pCardBar = CardBar::create();
 	m_pCardBar->setCardsGap(10);
 	m_pCardBar->setPadding(10, 10, 20, 20);
 	m_pCardBar->setCardsFlag(data->getCardBitMask());
-	m_pCardBar->setPosition(Vec2(visibleSize.width / 2, m_pCardBar->getContentSize().height / 2));
+	m_pCardBar->setPosition(Vec2(visibleSize.width / 2, 0));
 	m_pCardBar->setVisible(false);
 	this->addChild(m_pCardBar);
 
 	initGameBoardLayout(visibleSize.width, visibleSize.height);
 
 	return true;
+}
+
+void GameScene::menuBackCallback(Ref* pSender) {
+	GameController::getInstance()->leaveScene();
 }
 
 void GameScene::initGameBoardLayout(int w, int h) {
@@ -121,11 +148,11 @@ void GameScene::showStartCounting() {
 	schedule(schedule_selector(GameScene::startCountingCallback), 0.01f);
 }
 
-void GameScene::startCountingCallback(float tm) {
+void GameScene::startCountingCallback(float delta) {
 	if (!m_pLabelCounting)
 		return;
 
-	m_fTimeCounter += tm;
+	m_fTimeCounter += delta;
 	if (m_fTimeCounter < 1.5f) {
 		int index = (int) m_fTimeCounter;
 		int size = ((int)(m_fTimeCounter * 100)) % 100 * 3;
@@ -146,6 +173,45 @@ void GameScene::startCountingCallback(float tm) {
 	}
 }
 
+void GameScene::countdownTimerCallback(float delta) {
+	if (!m_pProgressTimer)
+		return;
+
+	if (m_eTimerType == UNKNONW_TIMER) {
+		this->unschedule(schedule_selector(GameScene::countdownTimerCallback));
+		return;
+	}
+
+	m_fTimeCounter += delta;
+	auto data = m_pPuzzle->getPuzzleData();
+
+	// set total & callback according to timer type
+	float total = 0;
+	SEL_SCHEDULE callback = nullptr;
+	switch (m_eTimerType) {
+	case REMEMBER_TIMER:
+		total = data->rem_time;
+		callback = schedule_selector(GameScene::onRememberTimerDone);
+		break;
+	case REPRESENT_TIMER:
+		callback = schedule_selector(GameScene::onRepresentTimerDone);
+		total = data->rep_time;
+		break;
+	}
+
+	float left = total - m_fTimeCounter;
+	if (left < 0)
+		left = 0;
+	// set percentage of progress bar
+	m_pProgressTimer->setPercentage(left * 100 / total);
+
+	if (left <= 0) {	// count down timer done
+		this->unschedule(schedule_selector(GameScene::countdownTimerCallback));
+		if (callback)
+			(this->*callback)(0.0f);	//!!!DONT use scheduleOnce!!!
+	}
+}
+
 void GameScene::showGameBoard() {
 	for (int i = 0; i < m_vctCards.size(); i++) {
 		m_vctCards[i]->flipCard();
@@ -153,39 +219,41 @@ void GameScene::showGameBoard() {
 
 	auto data = m_pPuzzle->getPuzzleData();
 
-	auto pt = ProgressTimer::create(Sprite::create("progressbar_fg.png"));
-	pt->setType(kCCProgressTimerTypeBar);
-	pt->setPosition(500, 30);
-	pt->setPercentage(100.0f);
-	pt->setMidpoint(Vec2(0, 0)); //- m_pProgressTimer->getContentSize().height / 2));
-	pt->setBarChangeRate(Vec2(1, 0));
+	// show count down timer progress bar
+	m_pProgressTimer->setPercentage(100.0f);
+	m_pProgressTimer->setVisible(true);
 
-	this->addChild(pt, 1);
-
-	auto sc = Director::getInstance()->getScheduler();
-	sc->schedule([=](float delta) {
-		static float totalDelta = 0;
-		totalDelta += delta;
-		float left = data->rem_time - totalDelta;
-		if (left < 0)
-			left = 0;
-		pt->setPercentage(left * 100 / data->rem_time);
-
-		if (left <= 0) {
-			Director::getInstance()->getScheduler()->unschedule("tester", this);
-			this->onRememberTimerDone(0.0f);
-		}
-
-	}, this, 0.1f, false, "tester");
+	m_eTimerType = REMEMBER_TIMER;
+	m_fTimeCounter = 0.0f;
+	this->schedule(schedule_selector(GameScene::countdownTimerCallback), 0.1f);
 }
 
 void GameScene::onRememberTimerDone(float left) {
+	m_pProgressTimer->setVisible(false);
+
 	//TODO flip cards or move cards out ??
 	for (int i = 0; i < m_vctCards.size(); i++) {
 		Card* card = m_vctCards[i];
 		card->flipCard();
 	}
+
+	m_pCardBar->setAnchorPoint(Vec2(0.5, 0));
+	m_pCardBar->setRotation3D(Vec3(270, 0, 0));
 	m_pCardBar->setVisible(true);
+
+	m_pCardBar->runAction(Sequence::create(RotateBy::create(1, Vec3(90, 0, 0)),
+			CallFunc::create([this](){
+				m_pProgressTimer->setPercentage(100.0f);
+				m_pProgressTimer->setVisible(true);
+				m_eTimerType = REPRESENT_TIMER;
+				m_fTimeCounter = 0.0f;
+				this->schedule(schedule_selector(GameScene::countdownTimerCallback), 0.1f);
+			}),
+			nullptr));
+}
+
+void GameScene::onRepresentTimerDone(float left) {
+	//TODO calculate score
 }
 
 bool GameScene::onTouchBegan(Touch *touch, Event *unused_event) {

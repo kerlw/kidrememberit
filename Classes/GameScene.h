@@ -26,6 +26,8 @@ public:
 	CREATE_FUNC(GameScene);
 	virtual bool init() override;
 
+	void menuBackCallback(Ref* pSender);
+
     virtual bool onTouchBegan(Touch *touch, Event *unused_event) override;
 	virtual void onTouchMoved(Touch *touch, Event *unused_event) override;
 	virtual void onTouchEnded(Touch *touch, Event *unused_event) override;
@@ -37,7 +39,9 @@ protected:
 	void initGameBoardLayout(int w, int h);
 
 	void showStartCounting();
-	void startCountingCallback(float tm);
+
+	void startCountingCallback(float delta);
+	void countdownTimerCallback(float delta);
 
 	void showGameBoard();
 
@@ -48,8 +52,15 @@ protected:
 
 protected:
 	Label* m_pLabelCounting;
+	ProgressTimer* m_pProgressTimer;
 	CardBar* m_pCardBar;
 	Card* m_pSelectedCard;
+
+	enum {
+		UNKNONW_TIMER,
+		REMEMBER_TIMER,
+		REPRESENT_TIMER,
+	} m_eTimerType;
 
 	int m_iCounter;
 	float m_fTimeCounter;

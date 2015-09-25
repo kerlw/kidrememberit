@@ -16,6 +16,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   ../../Classes/GameScene.cpp \
                    ../../Classes/GameController.cpp \
 				   ../../Classes/Card.cpp \
+				   ../../Classes/CardBar.cpp \
 				   ../../Classes/Puzzle.cpp \
 				   ../../Classes/UserData.cpp \
 				   ../../Classes/MaskLayer.cpp
