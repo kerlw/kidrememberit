@@ -46,10 +46,6 @@ bool GameScene::init() {
 	Size visibleSize = director->getVisibleSize();
 	Vec2 origin = director->getVisibleOrigin();
 
-	m_pLabelCounting = Label::create();
-	m_pLabelCounting->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-	this->addChild(m_pLabelCounting);
-
 	//back menu item
     auto backItem = MenuItemImage::create("back0.png", "back1.png",
                                            CC_CALLBACK_1(GameScene::menuBackCallback, this));
@@ -101,6 +97,10 @@ bool GameScene::init() {
 
 	initGameBoardLayout(visibleSize.width, visibleSize.height);
 
+	m_pLabelCounting = Label::create();
+	m_pLabelCounting->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	this->addChild(m_pLabelCounting);
+
 	return true;
 }
 
@@ -130,7 +130,7 @@ void GameScene::initGameBoardLayout(int w, int h) {
 		int y = h - (cardSize.height + cellHeight * row + cellWidth / 2);
 		m_vctCards[i]->setPosition(Vec2(x, y));
 
-		this->addChild(m_vctCards[i], -1);
+		this->addChild(m_vctCards[i]);
 	}
 }
 
