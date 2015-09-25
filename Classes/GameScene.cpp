@@ -206,9 +206,10 @@ void GameScene::countdownTimerCallback(float delta) {
 	m_pProgressTimer->setPercentage(left * 100 / total);
 
 	if (left <= 0) {	// count down timer done
-		this->unschedule(schedule_selector(GameScene::countdownTimerCallback));
 		if (callback)
 			(this->*callback)(0.0f);	//!!!DONT use scheduleOnce!!!
+		else
+			this->unschedule(schedule_selector(GameScene::countdownTimerCallback));
 	}
 }
 
@@ -229,6 +230,9 @@ void GameScene::showGameBoard() {
 }
 
 void GameScene::onRememberTimerDone(float left) {
+	// stop count down timer
+	this->unschedule(schedule_selector(GameScene::countdownTimerCallback));
+
 	m_pProgressTimer->setVisible(false);
 
 	//TODO flip cards or move cards out ??
@@ -241,6 +245,7 @@ void GameScene::onRememberTimerDone(float left) {
 	m_pCardBar->setRotation3D(Vec3(270, 0, 0));
 	m_pCardBar->setVisible(true);
 
+	// show CardBar then start represent-stage's timer
 	m_pCardBar->runAction(Sequence::create(RotateBy::create(1, Vec3(90, 0, 0)),
 			CallFunc::create([this](){
 				m_pProgressTimer->setPercentage(100.0f);
@@ -253,6 +258,9 @@ void GameScene::onRememberTimerDone(float left) {
 }
 
 void GameScene::onRepresentTimerDone(float left) {
+	// stop count down timer
+	this->unschedule(schedule_selector(GameScene::countdownTimerCallback));
+
 	//TODO calculate score
 }
 
@@ -277,10 +285,21 @@ void GameScene::onTouchMoved(Touch *touch, Event *unused_event) {
 }
 
 void GameScene::onTouchEnded(Touch *touch, Event *unused_event) {
-	if (m_pSelectedCard) {
-		this->removeChild(m_pSelectedCard);
+	if (!m_pSelectedCard)
+		return;
+
+	// remove the selected card from scene at first.
+	this->removeChild(m_pSelectedCard);
+
+	Vec2 location = touch->getLocation();
+	bool found = false;
+	for (int i = 0; i < m_vctCards.size(); i++) {
+
 	}
+
+	//TODO check victory
 }
+
 void GameScene::onTouchCancelled(Touch *touch, Event *unused_event) {
 	if (m_pSelectedCard) {
 		this->removeChild(m_pSelectedCard);
