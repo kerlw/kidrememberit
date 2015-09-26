@@ -58,6 +58,7 @@ protected:
 
 	enum {
 		UNKNONW_TIMER,
+		READYGO_TIMER,
 		REMEMBER_TIMER,
 		REPRESENT_TIMER,
 	} m_eTimerType;

@@ -38,8 +38,8 @@ bool PuzzleData::init(const uint16_t& score) {
 		memset(this->data, 0, size);
 	}
 
-	this->rem_time = 3.0f * this->size;
-	this->rep_time = 2.0f * this->size;
+	this->rem_time = 5.0f * this->size;
+	this->rep_time = 5.0f * this->size;
 	this->retain();
 	return true;
 }

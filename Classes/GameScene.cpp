@@ -145,22 +145,39 @@ void GameScene::showStartCounting() {
 	m_fTimeCounter = 0;
 	m_pLabelCounting->setString(COUNTING_STRING[m_iCounter]);
 	m_pLabelCounting->setSystemFontSize(300);
+	m_eTimerType = READYGO_TIMER;
 	schedule(schedule_selector(GameScene::startCountingCallback), 0.01f);
+
+//	// another way to implements the start counting animation
+//	m_pLabelCounting->runAction(Sequence::create(ScaleTo::create(1, 0),
+//				CallFunc::create([this](){
+//					m_pLabelCounting->setString(COUNTING_STRING[GO_INDEX]);
+//				}),
+//				ScaleTo::create(1, 1),
+//				CallFunc::create([this](){
+//					m_pLabelCounting->removeFromParent();
+//					this->showGameBoard();
+//				}),
+//				nullptr));
 }
 
 void GameScene::startCountingCallback(float delta) {
 	if (!m_pLabelCounting)
 		return;
 
+	if (m_eTimerType != READYGO_TIMER) {
+		this->unschedule(schedule_selector(GameScene::startCountingCallback));
+		return;
+	}
+
 	m_fTimeCounter += delta;
-	if (m_fTimeCounter < 1.5f) {
-		int index = (int) m_fTimeCounter;
+	if (m_fTimeCounter <= 1.0f) {
+//		int index = (int) m_fTimeCounter;
 		int size = ((int)(m_fTimeCounter * 100)) % 100 * 3;
-//		log("tm is %f, index is %d, size is %d", m_fTimeCounter, index, size);
-		if (index != m_iCounter) {
-			m_iCounter = index;
-			m_pLabelCounting->setString(COUNTING_STRING[m_iCounter]);
-		}
+//		if (index != m_iCounter) {
+//			m_iCounter = index;
+//			m_pLabelCounting->setString(COUNTING_STRING[m_iCounter]);
+//		}
 		m_pLabelCounting->setSystemFontSize(320 - size);
 	} else if (m_fTimeCounter <= 2.0f) {
 		m_pLabelCounting->setString(COUNTING_STRING[GO_INDEX]);
@@ -177,7 +194,7 @@ void GameScene::countdownTimerCallback(float delta) {
 	if (!m_pProgressTimer)
 		return;
 
-	if (m_eTimerType == UNKNONW_TIMER) {
+	if (m_eTimerType != REMEMBER_TIMER && m_eTimerType != REPRESENT_TIMER) {
 		this->unschedule(schedule_selector(GameScene::countdownTimerCallback));
 		return;
 	}
@@ -232,13 +249,13 @@ void GameScene::showGameBoard() {
 void GameScene::onRememberTimerDone(float left) {
 	// stop count down timer
 	this->unschedule(schedule_selector(GameScene::countdownTimerCallback));
+	m_eTimerType = UNKNONW_TIMER;
 
 	m_pProgressTimer->setVisible(false);
 
-	//TODO flip cards or move cards out ??
 	for (int i = 0; i < m_vctCards.size(); i++) {
 		Card* card = m_vctCards[i];
-		card->flipCard();
+		card->runAction(MoveTo::create(0.8, Vec3(-100, 800, 10)));
 	}
 
 	m_pCardBar->setAnchorPoint(Vec2(0.5, 0));
@@ -260,6 +277,7 @@ void GameScene::onRememberTimerDone(float left) {
 void GameScene::onRepresentTimerDone(float left) {
 	// stop count down timer
 	this->unschedule(schedule_selector(GameScene::countdownTimerCallback));
+	m_eTimerType = UNKNONW_TIMER;
 
 	//TODO calculate score
 }
