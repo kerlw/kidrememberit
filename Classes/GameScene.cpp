@@ -13,6 +13,7 @@
 #include "Puzzle.h"
 
 #include "ui/UIButton.h"
+#include "ui/UIScale9Sprite.h"
 
 static const char* COUNTING_STRING[] = { "Ready~", "Go!" };
 static const int GO_INDEX = 1;
@@ -74,6 +75,7 @@ bool GameScene::init() {
 	m_vctCards.clear();
 	for (int i = 0; i < data->size; i++) {
 		m_vctCards.push_back(Card::create((Card::CardType)data->data[i], false));
+		m_vctSlots.push_back(CardSlot::create("slot.png"));
 	}
 
 	// create count down timer progress bar, TODO : create a new ProgressBar class
@@ -128,8 +130,13 @@ void GameScene::initGameBoardLayout(int w, int h) {
 		int col = i % kMaxColumns;
 		int x = cardSize.width + cellWidth * col + cellWidth / 2;
 		int y = h - (cardSize.height + cellHeight * row + cellWidth / 2);
-		m_vctCards[i]->setPosition(Vec2(x, y));
 
+		auto slot = m_vctSlots[i];
+		slot->setPosition(Vec2(x, y));
+		slot->setContentSize((cardSize + Size(5, 5)));
+		this->addChild(slot);
+
+		m_vctCards[i]->setPosition(Vec2(x, y));
 		this->addChild(m_vctCards[i]);
 	}
 }

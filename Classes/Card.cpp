@@ -149,3 +149,60 @@ void Card::onTouchCancelled(Touch *touch, Event *unusedEvent) {
 Card* Card::clone() {
 	return Card::create(m_eType, m_bFront);
 }
+
+
+//////////////////////////////////////////////////////////////////
+//	CardSlot
+//////////////////////////////////////////////////////////////////
+CardSlot* CardSlot::create(const std::string& file) {
+	CardSlot* pRet = new (std::nothrow) CardSlot();
+	if (pRet && pRet->init(file)) {
+		pRet->autorelease();
+		return pRet;
+	} else {
+		delete pRet;
+		pRet = NULL;
+		return NULL;
+	}
+}
+
+bool CardSlot::init(const std::string& file) {
+	auto sp = ui::Scale9Sprite::create(file);
+	if (!sp)
+		return false;
+
+	this->setAnchorPoint(Vec2(0.5, 0.5));
+	this->ignoreAnchorPointForPosition(false);
+
+	sp->setCapInsets(Rect(20, 20, 10, 10));
+	sp->setAnchorPoint(Vec2(0,0));
+	sp->ignoreAnchorPointForPosition(false);
+	sp->setPosition(Vec2(0, 0));
+
+	m_pBg = sp;
+	this->addChild(sp);
+	return true;
+}
+
+void CardSlot::setContentSize(const Size & size) {
+	Layer::setContentSize(size);
+	if (m_pBg) {
+		m_pBg->setPreferredSize(size);
+		m_pBg->setPosition(Vec2(0, 0));
+	}
+}
+
+void CardSlot::setCard(Card* card) {
+	if (card == m_pCard)
+		return;
+
+	CC_SAFE_RETAIN(card);
+	if (card)
+		this->addChild(card);
+	if (m_pCard)
+		this->removeChild(m_pCard);
+	CC_SAFE_RELEASE(m_pCard);
+
+	m_pCard = card;
+
+}

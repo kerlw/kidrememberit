@@ -13,6 +13,7 @@
 #include <vector>
 
 class Card;
+class CardSlot;
 class CardBar;
 class Puzzle;
 
@@ -68,6 +69,7 @@ protected:
 	Puzzle* m_pPuzzle;
 
 	std::vector<Card*> m_vctCards;
+	std::vector<CardSlot*> m_vctSlots;
 };
 
 #endif /* GAMESCENE_H_ */

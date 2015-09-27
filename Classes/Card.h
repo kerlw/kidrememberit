@@ -9,6 +9,9 @@
 #define CARD_H_
 
 #include "cocos2d.h"
+#include "ui/UIScale9Sprite.h"
+
+#include <string>
 
 USING_NS_CC;
 
@@ -36,6 +39,8 @@ public:
 	void flipCard();
 
 	void setClickable(bool enabled);
+	const CardType type() { return m_eType; }
+	bool isFront() { return m_bFront; }
 
     virtual bool onTouchBegan(Touch *touch, Event *unusedEvent) override;
     virtual void onTouchMoved(Touch *touch, Event *unusedEvent) override;
@@ -59,6 +64,26 @@ private:
 
 	bool m_bTouchEnabled;
 	EventListenerTouchOneByOne* m_pTouchListener;
+};
+
+class CardSlot : public Layer {
+public:
+	virtual ~CardSlot() {}
+
+	static CardSlot* create(const std::string& file);
+
+	virtual bool init(const std::string& file);
+	void setCard(Card* card);
+
+	virtual void setContentSize(const Size & var) override;
+
+private:
+	CardSlot() : m_pBg(nullptr), m_pCard(nullptr) {}
+
+private:
+	ui::Scale9Sprite* m_pBg;
+	Card* m_pCard;
+
 };
 
 #endif /* CARD_H_ */
