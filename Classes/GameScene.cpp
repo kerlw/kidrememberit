@@ -72,12 +72,6 @@ bool GameScene::init() {
 		return false;	//TODO give out error tips.
 	}
 
-	m_vctCards.clear();
-	for (int i = 0; i < data->size; i++) {
-		m_vctCards.push_back(Card::create((Card::CardType)data->data[i], false));
-		m_vctSlots.push_back(CardSlot::create("slot.png"));
-	}
-
 	// create count down timer progress bar, TODO : create a new ProgressBar class
 	m_pProgressTimer = ProgressTimer::create(Sprite::create("progressbar_fg.png"));
 	m_pProgressTimer->setType(kCCProgressTimerTypeBar);
@@ -111,33 +105,41 @@ void GameScene::menuBackCallback(Ref* pSender) {
 }
 
 void GameScene::initGameBoardLayout(int w, int h) {
-	int cardCounts = m_vctCards.size();
+	m_vctCards.clear();
+	m_vctSlots.clear();
+
+	if (!m_pPuzzle || !m_pPuzzle->getPuzzleData())
+		return;
+
+	auto data = m_pPuzzle->getPuzzleData();
+	int cardCounts = data->size;
 	int cols = cardCounts > kMaxColumns ? kMaxColumns : cardCounts;
 	int rows = (cardCounts + kMaxColumns - 1) / kMaxColumns;
 
-	auto card = m_vctCards.front();
-	if (!card)
-		return;
-
-	const Size cardSize = card->getContentSize();
+	// create a tmp card to calculate layout parameters
+	auto tmpCard = Card::create(Card::CardType::CARD_MIN, false);
+	const Size cardSize = tmpCard->getContentSize();
 
 	int cellWidth = (w - 2 * cardSize.width) / cols;
 	int cellHeight = (h - 2 * cardSize.height) / rows;
 
-	int row = 0;
-	for (int i = 0; i < m_vctCards.size(); i++) {
+	for (int i = 0; i < cardCounts; i++) {
+		auto card = Card::create((Card::CardType)data->data[i], false);
+
 		int row = i / kMaxColumns;
 		int col = i % kMaxColumns;
 		int x = cardSize.width + cellWidth * col + cellWidth / 2;
 		int y = h - (cardSize.height + cellHeight * row + cellWidth / 2);
 
-		auto slot = m_vctSlots[i];
+		auto slot = CardSlot::create("slot.png");
 		slot->setPosition(Vec2(x, y));
 		slot->setContentSize((cardSize + Size(5, 5)));
+		m_vctSlots.push_back(slot);
 		this->addChild(slot);
 
-		m_vctCards[i]->setPosition(Vec2(x, y));
-		this->addChild(m_vctCards[i]);
+		card->setPosition(Vec2(x, y));
+		m_vctCards.push_back(card);
+		this->addChild(card);
 	}
 }
 
