@@ -196,13 +196,21 @@ void CardSlot::setCard(Card* card) {
 	if (card == m_pCard)
 		return;
 
+	Size size = this->getContentSize();
 	CC_SAFE_RETAIN(card);
-	if (card)
+	if (card) {
+		card->setPosition(Vec2(size.width / 2, size.height / 2));
 		this->addChild(card);
+	}
+
 	if (m_pCard)
 		this->removeChild(m_pCard);
 	CC_SAFE_RELEASE(m_pCard);
 
 	m_pCard = card;
+}
 
+bool CardSlot::hitTest(const Vec2& loc) {
+	Rect rt = this->getBoundingBox();
+	return rt.containsPoint(loc);
 }

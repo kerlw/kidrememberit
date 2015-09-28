@@ -73,7 +73,19 @@ public:
 	static CardSlot* create(const std::string& file);
 
 	virtual bool init(const std::string& file);
+
+	void setOriginalCardType(const Card::CardType& type) { m_eOriginalType = type;	}
+
+	const Card* getCard() const { return m_pCard;	}
 	void setCard(Card* card);
+
+	bool isSetCardCorrectly() {
+		if (!m_pCard || m_pCard->type() != m_eOriginalType)
+			return false;
+		return true;
+	};
+
+	bool hitTest(const Vec2& loc);
 
 	virtual void setContentSize(const Size & var) override;
 
@@ -83,6 +95,8 @@ private:
 private:
 	ui::Scale9Sprite* m_pBg;
 	Card* m_pCard;
+
+	Card::CardType m_eOriginalType;
 
 };
 

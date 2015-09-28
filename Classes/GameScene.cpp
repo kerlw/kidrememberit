@@ -315,16 +315,27 @@ void GameScene::onTouchEnded(Touch *touch, Event *unused_event) {
 	if (!m_pSelectedCard)
 		return;
 
+	CC_SAFE_RETAIN(m_pSelectedCard);
 	// remove the selected card from scene at first.
 	this->removeChild(m_pSelectedCard);
 
 	Vec2 location = touch->getLocation();
+	bool done = true;
 	bool found = false;
-	for (int i = 0; i < m_vctCards.size(); i++) {
+	for (int i = 0; i < m_vctSlots.size(); i++) {
+		if (!found && m_vctSlots[i]->hitTest(location)) {
+			m_vctSlots[i]->setCard(m_pSelectedCard);
+			found = true;
+		}
 
+		if (done && !m_vctSlots[i]->getCard())
+			done = false;
 	}
+	CC_SAFE_RELEASE(m_pSelectedCard);
 
-	//TODO check victory
+	if (done) {
+		//TODO showScoreLayer
+	}
 }
 
 void GameScene::onTouchCancelled(Touch *touch, Event *unused_event) {
