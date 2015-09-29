@@ -33,6 +33,7 @@ GameScene::GameScene()
 }
 
 GameScene::~GameScene() {
+	this->unscheduleAllSelectors();
 	CC_SAFE_RELEASE(m_pPuzzle);
 }
 

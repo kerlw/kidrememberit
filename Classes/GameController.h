@@ -23,6 +23,7 @@ public:
 	virtual ~GameController();
 
 	static GameController* getInstance();
+	static void destroyInstance();
 
 	void enterScene(const SceneType& eType);
 	void leaveScene();

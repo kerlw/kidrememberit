@@ -40,7 +40,6 @@ bool PuzzleData::init(const uint16_t& score) {
 
 	this->rem_time = 5.0f * this->size;
 	this->rep_time = 5.0f * this->size;
-	this->retain();
 	return true;
 }
 

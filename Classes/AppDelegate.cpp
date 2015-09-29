@@ -13,6 +13,10 @@ AppDelegate::AppDelegate() {
 
 AppDelegate::~AppDelegate() 
 {
+	GameController::destroyInstance();
+#if CC_REF_LEAK_DETECTION
+	Ref::printLeaks();
+#endif
 }
 
 //if you want a different context,just modify the value of glContextAttrs

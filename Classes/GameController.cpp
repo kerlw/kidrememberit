@@ -25,6 +25,9 @@ GameController* GameController::getInstance() {
 	return s_pGameController;
 }
 
+void GameController::destroyInstance() {
+	CC_SAFE_DELETE(s_pGameController);
+}
 bool GameController::init() {
 	return false;
 }
