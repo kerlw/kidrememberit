@@ -107,6 +107,7 @@ void GameScene::menuBackCallback(Ref* pSender) {
 void GameScene::initGameBoardLayout(int w, int h) {
 	m_vctCards.clear();
 	m_vctSlots.clear();
+	m_bInRepresentStage = false;
 
 	if (!m_pPuzzle || !m_pPuzzle->getPuzzleData())
 		return;
@@ -278,20 +279,28 @@ void GameScene::onRememberTimerDone(float left) {
 				m_pProgressTimer->setVisible(true);
 				m_eTimerType = REPRESENT_TIMER;
 				m_fTimeCounter = 0.0f;
+				m_bInRepresentStage = true;
 				this->schedule(schedule_selector(GameScene::countdownTimerCallback), 0.1f);
 			}),
 			nullptr));
 }
 
 void GameScene::onRepresentTimerDone(float left) {
+	m_bInRepresentStage = false;
+
 	// stop count down timer
 	this->unschedule(schedule_selector(GameScene::countdownTimerCallback));
 	m_eTimerType = UNKNONW_TIMER;
 
+	if (left < 0)
+		left = 0;
 	//TODO calculate score
 }
 
 bool GameScene::onTouchBegan(Touch *touch, Event *unused_event) {
+	if (!m_bInRepresentStage)
+		return false;
+
 	Vec2 location = touch->getLocation();
 	if (m_pCardBar) {
 		auto card = m_pCardBar->cloneCardAtLocation(m_pCardBar->convertToNodeSpace(location));
@@ -306,13 +315,16 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event) {
 }
 
 void GameScene::onTouchMoved(Touch *touch, Event *unused_event) {
+	if (!m_bInRepresentStage)
+		return;
+
 	if (m_pSelectedCard) {
 		m_pSelectedCard->setPosition(touch->getLocation());
 	}
 }
 
 void GameScene::onTouchEnded(Touch *touch, Event *unused_event) {
-	if (!m_pSelectedCard)
+	if (!m_bInRepresentStage || !m_pSelectedCard)
 		return;
 
 	CC_SAFE_RETAIN(m_pSelectedCard);
@@ -334,7 +346,7 @@ void GameScene::onTouchEnded(Touch *touch, Event *unused_event) {
 	CC_SAFE_RELEASE(m_pSelectedCard);
 
 	if (done) {
-		//TODO showScoreLayer
+		this->onRepresentTimerDone(m_pPuzzle->getPuzzleData()->rep_time - m_fTimeCounter);
 	}
 }
 

@@ -70,6 +70,8 @@ protected:
 
 	std::vector<Card*> m_vctCards;
 	std::vector<CardSlot*> m_vctSlots;
+
+	bool m_bInRepresentStage;
 };
 
 #endif /* GAMESCENE_H_ */
