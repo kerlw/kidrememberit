@@ -19,7 +19,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   ../../Classes/CardBar.cpp \
 				   ../../Classes/Puzzle.cpp \
 				   ../../Classes/UserData.cpp \
-				   ../../Classes/MaskLayer.cpp
+				   ../../Classes/MaskLayer.cpp \
+				   ../../Classes/Dialog.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 

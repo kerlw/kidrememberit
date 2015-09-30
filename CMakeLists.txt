@@ -71,7 +71,7 @@ if(MSVC)
                   -wd4251 -wd4244 -wd4334 -wd4005 -wd4820 -wd4710
                   -wd4514 -wd4056 -wd4996 -wd4099)
 else()
-  set(CMAKE_C_FLAGS_DEBUG "-g -Wall -DCOCOS2D_DEBUG=1")
+    set(CMAKE_C_FLAGS_DEBUG "-g -Wall -DCOCOS2D_DEBUG=1")
   set(CMAKE_CXX_FLAGS_DEBUG ${CMAKE_C_FLAGS_DEBUG})
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-exceptions -std=c99")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -std=c++11 -Wno-deprecated-declarations -Wno-reorder")
@@ -125,6 +125,7 @@ set(GAME_SRC
   Classes/Puzzle.cpp
   Classes/UserData.cpp
   Classes/CardBar.cpp
+  Classes/Dialog.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
@@ -138,6 +139,7 @@ set(GAME_HEADERS
   Classes/Puzzle.h
   Classes/UserData.h
   Classes/CardBar.h
+  Classes/Dialog.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 
