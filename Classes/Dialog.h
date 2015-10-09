@@ -89,23 +89,26 @@ private:
 	std::string m_strNegativeRes;
 };
 
-class Dialog : public Layer {
+class Dialog : public LayerColor {
 	friend class DialogBuilder;
 public:
 	virtual ~Dialog() {};
 
 	void show() {	this->setVisible(true);		}
 	void hide() {	this->setVisible(false); 	}
-	void dissmiss() {
+	void dismiss() {
 		this->retain();
 		this->removeFromParent();
 		if (m_pListener)
 			m_pListener->onDialogDismissed(this);
 		this->release();
 	}
+	DialogButtonType result() { return m_eResult; }
 
 private:
-	Dialog() {}
+	Dialog(DialogEventListener* listener) : m_eResult(DialogButtonType::DBT_NEGATIVE) , m_pListener(listener) {}
+	void onPositiveButtonClicked(Ref* sender);
+	void onNegativeButtonClicked(Ref* sender);
 
 protected:
 	DialogButtonType m_eResult;
