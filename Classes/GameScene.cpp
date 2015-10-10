@@ -296,6 +296,11 @@ void GameScene::onRepresentTimerDone(float left) {
 	if (left < 0)
 		left = 0;
 	//TODO calculate score
+//	auto dlg = DialogBuilder::create(this, this)->setPadding(80, 100, 80, 180)
+//			->setPositiveButton("OK", "")->setNegativeButton("Cancel", "")->build();
+//
+//	if (dlg)
+//		dlg->show();
 }
 
 bool GameScene::onTouchBegan(Touch *touch, Event *unused_event) {
@@ -355,4 +360,13 @@ void GameScene::onTouchCancelled(Touch *touch, Event *unused_event) {
 	if (m_pSelectedCard) {
 		this->removeChild(m_pSelectedCard);
 	}
+}
+
+void GameScene::onDialogButtonClicked(Dialog* dlg, const DialogButtonType& which) {
+	log("onDialogButtonClicked %p %d", dlg, (int)which);
+	dlg->dismiss();
+}
+
+void GameScene::onDialogDismissed(Dialog* dlg) {
+	log("onDialogDissmissed %p", dlg);
 }

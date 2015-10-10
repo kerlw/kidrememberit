@@ -9,6 +9,7 @@
 #define GAMESCENE_H_
 
 #include "cocos2d.h"
+#include "Dialog.h"
 
 #include <vector>
 
@@ -19,7 +20,7 @@ class Puzzle;
 
 USING_NS_CC;
 
-class GameScene: public Layer {
+class GameScene: public Layer, DialogEventListener {
 public:
 	GameScene();
 	virtual ~GameScene();
@@ -33,6 +34,9 @@ public:
 	virtual void onTouchMoved(Touch *touch, Event *unused_event) override;
 	virtual void onTouchEnded(Touch *touch, Event *unused_event) override;
 	virtual void onTouchCancelled(Touch *touch, Event *unused_event) override;
+
+	virtual void onDialogButtonClicked(Dialog* dlg, const DialogButtonType& which) override;
+	virtual void onDialogDismissed(Dialog* dlg) override;
 
 	virtual void onEnterTransitionDidFinish() override;
 
