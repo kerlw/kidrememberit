@@ -23,9 +23,34 @@ Step 2:
 
 ## Time factor
 1. Player has 5 seconds for each card in remember period
-2. Player has 3 seconds for each card in represent period
-3. Guessing player should use 2.5 seconds for each card on average.
-4. Guessing player should use 1.5 second for each card on average.
+2. Player has 5 seconds for each card in represent period
+3. Guessing player should use 2.5 seconds for each card in remember period on average.
+4. Guessing player should use 2 second for each card in represent period on average.
+
+===============
+
+OK
+
+Let's redesign the difficulty & score system for the step 1.
+
+At first, we need to point out all difficulty factors as below:
+
+1. type of cards to be used [2,9] -> 8 levels
++ number of cards to be used [5, 14] -> 10 levels
++ sequence of cards (ignore this factor, it's too complex for me to model it :P)
++ duration period for remember [2,5]s/card -> 4 levels
++ duration period for represent [2,5]s/card -> 4 levels
+
+And second, we need to make some rules to set / change these factors:
+
+1.  type of cards must NOT be less than 1/3 of number of cards. 
++ if the count of type of cards become the same with the number of cards or reached the max number of types, increase the number of cards
++ after increase number of cards, set the type of cards to the min number that could be used
+
+At last, we use the easiest way to calculate the score used to judge whether player should go forward to the next level or back to the previous level:
+
+1. Finished correctly in time, go forward, otherwise go back.
++ TODO make it more complex ~pula pula pula~~
 
 
 #孩子，记住它
@@ -48,3 +73,33 @@ Step 2:
 2. 根据孩子的表现来计算游戏的困难系数
 3. 如果孩子表现非常出色，说明当前的难度远低于他（她）的能力，可以适当跨级调高难度
 4. 最终目的是要创建出让孩子不尽最大努力无法通过的游戏
+
+## 时间因子
+1. 玩家在记忆阶段拥有 5秒/每张卡片
++ 玩家在重现阶段拥有 5秒/每张卡片
++ 猜测玩家在记忆阶段的平均水平应该在2.5秒/每张卡片
++ 猜测玩家在重现阶段的平均水平应该在2秒/每张卡片
+
+===============
+
+好吧，让我们来重新设计阶段一的 难度&积分 系统吧
+
+首先，我们需要列举出所有的难度因子：
+
+1. 使用的卡片的种类 [2, 9] -> 8阶
++ 使用的卡片的数量 [5, 14] -> 10阶
++ 卡片出现的顺序（暂时忽略这个因子，用这个因子建模对我来说太复杂了 :P）
++ 用于记忆的时间 [2, 5]s/卡片 -> 4阶
++ 用于重现的时间 [2, 5]s/卡片 -> 4阶
+
+然后我们制定一些规则来设置/改变这些因子：
+
+1. 卡片的种类不少于卡片数量的1/3
+2. 卡片种类和卡片数量持平或卡片种类达到种类最大数值后，增加难度则增加卡片数量
+3. 增加卡片数量后，卡片种类恢复到增加数量后可使用的最低种类数
+
+最后，我们使用最简单的规则来确定分数决定玩家晋级或降级
+
+1. 规定时间内成功完成，晋级，否则降级。
++ TODO 制定更复杂的分数计算和升降规则 ～普啦普啦普啦～～
+

@@ -15,7 +15,7 @@
 #include "ui/UIButton.h"
 #include "ui/UIScale9Sprite.h"
 
-static const char* COUNTING_STRING[] = { "Ready~", "Go!" };
+static const char* COUNTING_STRING[] = { "READY", "GO!" };
 static const int GO_INDEX = 1;
 
 const int GameScene::kMaxColumns = 7;
