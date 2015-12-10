@@ -8,6 +8,7 @@
 #include "Puzzle.h"
 
 #include <stdlib.h>
+#include <algorithm>
 #include "Const.h"
 #include "UserData.h"
 
@@ -26,7 +27,7 @@ PuzzleData *PuzzleData::create(const UserData* usr) {
 }
 
 void PuzzleData::resetUserData(const UserData* usr) {
-//	this->score = score;
+	init(usr);
 }
 
 bool PuzzleData::init(const UserData* usr) {
@@ -34,13 +35,17 @@ bool PuzzleData::init(const UserData* usr) {
 
 	size = 5 + usr->score / 8;
 	card_types = 2 + usr->score % 8;
+	card_types = std::min(std::max(card_types, (uint8_t)(size / 3)), size);
 	if (size > 0) {
 		data = new uint8_t[size];
 		memset(data, 0, size);
 	}
 
-	rem_time = 5.0f * size;
-	rep_time = 5.0f * size;
+	rem_time = std::min(5.0f * size, size * (1 + 8 * ((float)(255 - usr->remember_time_factor)) / 255));
+	rep_time = std::min(5.0f * size, size * (1 + 8 * ((float)(255 - usr->represent_time_factor)) / 255));
+
+//	log("PuzzleData initialized : type %d, size %d, card_types %d, rem_time %f, rep_time %f",
+//			type, size, card_types, rem_time, rep_time);
 	return true;
 }
 
@@ -74,7 +79,7 @@ bool Puzzle::generate() {
 		if (indexes.find(index) != indexes.end())
 			continue;
 
-		m_pData->data[i] = types_v[i];
+		m_pData->data[index] = types_v[i];
 		indexes.insert(index);
 		i++;
 	}

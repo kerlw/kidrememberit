@@ -50,7 +50,6 @@ public:
 	uint8_t *data;
 	float rem_time;
 	float rep_time;
-	const UserData* usr;
 };
 
 

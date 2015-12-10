@@ -20,6 +20,8 @@ public:
 	void load();
 	void save();
 
+	void addScore(const uint16_t& value);
+
 private:
 	UserData();
 

@@ -29,6 +29,7 @@ public:
 	virtual bool init() override;
 
 	void menuBackCallback(Ref* pSender);
+	void onButtonGoClicked(Ref* pSender);
 
     virtual bool onTouchBegan(Touch *touch, Event *unused_event) override;
 	virtual void onTouchMoved(Touch *touch, Event *unused_event) override;
@@ -41,7 +42,8 @@ public:
 	virtual void onEnterTransitionDidFinish() override;
 
 protected:
-	void initGameBoardLayout(int w, int h);
+	void initCardBarLayout();
+	void initGameBoardLayout();
 
 	void showStartCounting();
 
@@ -58,6 +60,8 @@ protected:
 protected:
 	Label* m_pLabelCounting;
 	ProgressTimer* m_pProgressTimer;
+	Node* m_pBtnGo;
+
 	CardBar* m_pCardBar;
 	Card* m_pSelectedCard;
 
@@ -76,6 +80,8 @@ protected:
 	std::vector<CardSlot*> m_vctSlots;
 
 	bool m_bInRepresentStage;
+	int m_iBoardWidth;
+	int m_iBoardHeight;
 };
 
 #endif /* GAMESCENE_H_ */

@@ -71,7 +71,6 @@ bool GameScene::init() {
 	CC_SAFE_RETAIN(m_pPuzzle);
 
 	m_pPuzzle->setPuzzleData(data);
-
 	if (!m_pPuzzle->generate()) {
 		return false;	//TODO give out error tips.
 	}
@@ -86,20 +85,36 @@ bool GameScene::init() {
 	m_pProgressTimer->setVisible(false);
 	this->addChild(m_pProgressTimer, 1);
 
+	// create btn go
+	m_pBtnGo = ui::Button::create("go0.png", "go1.png", "go0.png");
+	const Vec2 pos = m_pProgressTimer->getPosition();
+	const Vec2 pbSize = m_pProgressTimer->getContentSize();
+	const Vec2 btnSize = m_pBtnGo->getContentSize();
+	m_pBtnGo->setPosition(Vec2(pos.x + pbSize.x / 2 + btnSize.x, pos.y));
+	((ui::Button*)m_pBtnGo)->addClickEventListener(CC_CALLBACK_1(GameScene::onButtonGoClicked, this));
+	m_pBtnGo->setVisible(false);
+	this->addChild(m_pBtnGo, 1);
+
 	// create CardBar
 	m_pCardBar = CardBar::create();
 	m_pCardBar->setCardsGap(10);
 	m_pCardBar->setPadding(10, 10, 20, 20);
-	m_pCardBar->setCardsFlag(data->getCardBitMask());
 	m_pCardBar->setPosition(Vec2(visibleSize.width / 2, 0));
 	m_pCardBar->setVisible(false);
 	this->addChild(m_pCardBar);
 
-	initGameBoardLayout(visibleSize.width, visibleSize.height);
-
 	m_pLabelCounting = Label::create();
 	m_pLabelCounting->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	this->addChild(m_pLabelCounting);
+
+	m_iBoardWidth = visibleSize.width;
+	m_iBoardHeight = visibleSize.height;
+	initGameBoardLayout();
+
+	initCardBarLayout();
+
+	// make counting label on the top
+	m_pLabelCounting->setZOrder(255);
 
 	return true;
 }
@@ -108,8 +123,35 @@ void GameScene::menuBackCallback(Ref* pSender) {
 	GameController::getInstance()->leaveScene();
 }
 
-void GameScene::initGameBoardLayout(int w, int h) {
+void GameScene::onButtonGoClicked(Ref* pSender) {
+	if (m_eTimerType != REMEMBER_TIMER) {
+		m_pBtnGo->setVisible(false);
+		return;
+	}
+
+	m_pBtnGo->setVisible(false);
+	onRememberTimerDone(m_pPuzzle->getPuzzleData()->rem_time - m_fTimeCounter);
+}
+
+void GameScene::initCardBarLayout() {
+	if (m_pCardBar) {
+		m_pCardBar->setCardsFlag(m_pPuzzle->getPuzzleData()->getCardBitMask());
+		m_pCardBar->setVisible(false);
+	}
+}
+
+void GameScene::initGameBoardLayout() {
+	int w = m_iBoardWidth;
+	int h = m_iBoardHeight;
+
+	for (int i = 0; i < m_vctCards.size(); i++) {
+		m_vctCards[i]->removeFromParent();
+	}
 	m_vctCards.clear();
+
+	for (int i = 0; i < m_vctSlots.size(); i++) {
+		m_vctSlots[i]->removeFromParent();
+	}
 	m_vctSlots.clear();
 	m_bInRepresentStage = false;
 
@@ -157,6 +199,8 @@ void GameScene::onEnterTransitionDidFinish() {
 void GameScene::showStartCounting() {
 	m_iCounter = 0;
 	m_fTimeCounter = 0;
+
+	m_pLabelCounting->setVisible(true);
 	m_pLabelCounting->setString(COUNTING_STRING[m_iCounter]);
 	m_pLabelCounting->setSystemFontSize(300);
 	m_eTimerType = READYGO_TIMER;
@@ -198,7 +242,7 @@ void GameScene::startCountingCallback(float delta) {
 		m_pLabelCounting->setSystemFontSize(300);
 	} else {
 		unschedule(schedule_selector(GameScene::startCountingCallback));
-		m_pLabelCounting->removeFromParent();
+		m_pLabelCounting->setVisible(false);
 
 		showGameBoard();
 	}
@@ -208,6 +252,7 @@ void GameScene::countdownTimerCallback(float delta) {
 	if (!m_pProgressTimer)
 		return;
 
+	//Something must be wrong!!!
 	if (m_eTimerType != REMEMBER_TIMER && m_eTimerType != REPRESENT_TIMER) {
 		this->unschedule(schedule_selector(GameScene::countdownTimerCallback));
 		return;
@@ -254,6 +299,7 @@ void GameScene::showGameBoard() {
 	// show count down timer progress bar
 	m_pProgressTimer->setPercentage(100.0f);
 	m_pProgressTimer->setVisible(true);
+	m_pBtnGo->setVisible(true);
 
 	m_eTimerType = REMEMBER_TIMER;
 	m_fTimeCounter = 0.0f;
@@ -298,12 +344,18 @@ void GameScene::onRepresentTimerDone(float left) {
 
 	if (left < 0)
 		left = 0;
-	//TODO calculate score
-//	auto dlg = DialogBuilder::create(this, this)->setPadding(80, 100, 80, 180)
-//			->setPositiveButton("OK", "")->setNegativeButton("Cancel", "")->build();
-//
-//	if (dlg)
-//		dlg->show();
+
+	UserData::getInstance()->addScore(1);	//TODO calculate the real score
+	UserData::getInstance()->save();
+
+	auto dlg = DialogBuilder::create(this, this)->setPadding(80, 100, 80, 180)
+			->setMessage("Congratulations!!")
+			->setPositiveButton("Next Level", "")
+			->setNegativeButton("Quit", "")
+			->build();
+
+	if (dlg)
+		dlg->show();
 }
 
 bool GameScene::onTouchBegan(Touch *touch, Event *unused_event) {
@@ -368,6 +420,18 @@ void GameScene::onTouchCancelled(Touch *touch, Event *unused_event) {
 void GameScene::onDialogButtonClicked(Dialog* dlg, const DialogButtonType& which) {
 	log("onDialogButtonClicked %p %d", dlg, (int)which);
 	dlg->dismiss();
+
+	if (which == DialogButtonType::DBT_POSITIVE) {
+		m_pPuzzle->getPuzzleData()->resetUserData(UserData::getInstance());
+		m_pPuzzle->generate();
+		initGameBoardLayout();
+		initCardBarLayout();
+
+		showStartCounting();
+	} else {
+		GameController::getInstance()->leaveScene();
+	}
+
 }
 
 void GameScene::onDialogDismissed(Dialog* dlg) {

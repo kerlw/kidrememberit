@@ -43,6 +43,8 @@ void UserData::load() {
 	represent_time_factor = 0;
 
 	const std::string str = UserDefault::getInstance()->getStringForKey(name.c_str(), "");
+//	log("load user data: %s", str.c_str());
+
 	rapidjson::Document usr;
 	usr.Parse<0>(str.c_str());
 	if (usr.IsObject()) {
@@ -72,3 +74,11 @@ void UserData::save() {
 	UserDefault::getInstance()->setStringForKey(name.c_str(), buffer.GetString());
 }
 
+void UserData::addScore(const uint16_t& value) {
+	uint16_t new_score = score + value;
+	if (new_score / 8 != score / 8) {
+		remember_time_factor = 0;
+		represent_time_factor = 0;
+	}
+	score = new_score;
+}
