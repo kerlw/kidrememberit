@@ -11,6 +11,7 @@
 #include "Card.h"
 #include "CardBar.h"
 #include "Puzzle.h"
+#include "UserData.h"
 
 #include "ui/UIButton.h"
 #include "ui/UIScale9Sprite.h"
@@ -61,8 +62,10 @@ bool GameScene::init() {
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
-	uint16_t score = UserDefault::getInstance()->getIntegerForKey("player"); //TODO player should be nickname of player
-	auto data = PuzzleData::create(score);
+	UserData* usr = UserData::getInstance();
+	usr->name = "player";
+	usr->load();
+	auto data = PuzzleData::create(usr);
 
 	m_pPuzzle = Puzzle::create();
 	CC_SAFE_RETAIN(m_pPuzzle);

@@ -42,9 +42,9 @@ void UserData::load() {
 	remember_time_factor = 0;
 	represent_time_factor = 0;
 
-	const std::string data = UserDefault::getInstance()->getStringForKey(name.c_str(), "");
+	const std::string str = UserDefault::getInstance()->getStringForKey(name.c_str(), "");
 	rapidjson::Document usr;
-	usr.Parse(data.c_str());
+	usr.Parse<0>(str.c_str());
 	if (usr.IsObject()) {
 		if (usr.HasMember(KEY_SCORE))
 			score = usr[KEY_SCORE].GetUint();
@@ -61,13 +61,13 @@ void UserData::save() {
 
 	rapidjson::Document usr;
 	usr.SetObject();
-	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+	rapidjson::Document::AllocatorType& allocator = usr.GetAllocator();
 	usr.AddMember(KEY_SCORE, score, allocator);
 	usr.AddMember(KEY_REM_FACTOR, remember_time_factor, allocator);
 	usr.AddMember(KEY_REP_FACTOR, represent_time_factor, allocator);
 
-	StringBuffer buffer;
-	rapidjson::Writer<StringBuffer> writer(buffer);
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 	usr.Accept(writer);
 	UserDefault::getInstance()->setStringForKey(name.c_str(), buffer.GetString());
 }

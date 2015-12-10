@@ -9,12 +9,13 @@
 
 #include <stdlib.h>
 #include "Const.h"
+#include "UserData.h"
 
-#define SCORE_RANK  100
+#define SCORE_RANK  80
 
-PuzzleData *PuzzleData::create(const uint16_t& score) {
+PuzzleData *PuzzleData::create(const UserData* usr) {
 	PuzzleData *pRet = new (std::nothrow) PuzzleData();
-	if (pRet && pRet->init(score)) {
+	if (pRet && pRet->init(usr)) {
 		pRet->autorelease();
 		return pRet;
 	} else {
@@ -24,22 +25,22 @@ PuzzleData *PuzzleData::create(const uint16_t& score) {
 	}
 }
 
-void PuzzleData::resetScore(const uint16_t& score) {
+void PuzzleData::resetUserData(const UserData* usr) {
 //	this->score = score;
 }
 
-bool PuzzleData::init(const uint16_t& score) {
-	this->type = (PuzzleType) (score / SCORE_RANK);
+bool PuzzleData::init(const UserData* usr) {
+	type = PuzzleType::PT_REMEMBER_AND_REPRESENT; //(PuzzleType) (usr->score / SCORE_RANK);
 
-	//TODO size, rem_time, rep_time should be dynamic calculated
-	this->size = 5 + score / 15;
-	if (this->size > 0) {
-		this->data = new uint8_t[this->size];
-		memset(this->data, 0, size);
+	size = 5 + usr->score / 8;
+	card_types = usr->score % 8;
+	if (size > 0) {
+		data = new uint8_t[size];
+		memset(data, 0, size);
 	}
 
-	this->rem_time = 5.0f * this->size;
-	this->rep_time = 5.0f * this->size;
+	rem_time = 5.0f * size;
+	rep_time = 5.0f * size;
 	return true;
 }
 

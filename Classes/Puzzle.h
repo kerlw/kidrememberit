@@ -14,6 +14,8 @@
 
 USING_NS_CC;
 
+class UserData;
+
 enum class PuzzleType {
 	PT_REMEMBER_AND_REPRESENT = 0,
 	PT_REMEMBER_AND_PAIREFLIP = 1,
@@ -26,8 +28,8 @@ public:
 			delete data;
 	}
 
-	static PuzzleData* create(const uint16_t& score);
-	void resetScore(const uint16_t& score);
+	static PuzzleData* create(const UserData* usr);
+	void resetUserData(const UserData* usr);
 
 	uint16_t getCardBitMask() {
 		uint16_t ret = 0;
@@ -38,15 +40,17 @@ public:
 	}
 
 private:
-	bool init(const uint16_t& score);
+	bool init(const UserData* usr);
 	PuzzleData() : data(nullptr) {}
 
 public:
 	PuzzleType type;
-	uint16_t size;
+	uint8_t size;
+	uint8_t card_types;
 	uint8_t *data;
 	float rem_time;
 	float rep_time;
+	const UserData* usr;
 };
 
 
