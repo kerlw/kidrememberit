@@ -26,6 +26,8 @@ private:
 public:
 	std::string name;
 	uint16_t score;
+	uint8_t represent_time_factor;
+	uint8_t remember_time_factor;
 };
 
 #endif /* USERDATA_H_ */

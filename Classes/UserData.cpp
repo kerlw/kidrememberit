@@ -8,10 +8,18 @@
 #include "UserData.h"
 
 #include "cocos2d.h"
+#include "json/rapidjson.h"
+#include "json/document.h"
+#include "json/writer.h"
+#include "json/stringbuffer.h"
 
 USING_NS_CC;
 
 static UserData* _instance = nullptr;
+
+static const char* KEY_SCORE = "usr_score";
+static const char* KEY_REM_FACTOR = "rem_factor";
+static const char* KEY_REP_FACTOR = "rep_factor";
 
 UserData* UserData::getInstance() {
 	if (!_instance) {
@@ -30,13 +38,37 @@ void UserData::load() {
 	if (name.length() == 0)
 		return;
 
-	UserDefault::getInstance()->getStringForKey(name.c_str());
+	score = 0;
+	remember_time_factor = 0;
+	represent_time_factor = 0;
+
+	const std::string data = UserDefault::getInstance()->getStringForKey(name.c_str(), "");
+	rapidjson::Document usr;
+	usr.Parse(data.c_str());
+	if (usr.IsObject()) {
+		if (usr.HasMember(KEY_SCORE))
+			score = usr[KEY_SCORE].GetUint();
+		if (usr.HasMember(KEY_REM_FACTOR))
+			remember_time_factor = usr[KEY_REM_FACTOR].GetUint();
+		if (usr.HasMember(KEY_REP_FACTOR))
+			represent_time_factor = usr[KEY_REP_FACTOR].GetUint();
+	}
 }
 
 void UserData::save() {
 	if (name.length() == 0)
 		return;
 
-	UserDefault::getInstance()->setStringForKey(name.c_str(), "");
+	rapidjson::Document usr;
+	usr.SetObject();
+	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+	usr.AddMember(KEY_SCORE, score, allocator);
+	usr.AddMember(KEY_REM_FACTOR, remember_time_factor, allocator);
+	usr.AddMember(KEY_REP_FACTOR, represent_time_factor, allocator);
+
+	StringBuffer buffer;
+	rapidjson::Writer<StringBuffer> writer(buffer);
+	usr.Accept(writer);
+	UserDefault::getInstance()->setStringForKey(name.c_str(), buffer.GetString());
 }
 

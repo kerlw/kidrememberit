@@ -52,6 +52,17 @@ At last, we use the easiest way to calculate the score used to judge whether pla
 1. Finished correctly in time, go forward, otherwise go back.
 + TODO make it more complex ~pula pula pula~~
 
+###Remember time factor
+Each player has a remember time factor (uint_8, 0~255) used to calculate how long we should give to this player to remember for each card.
+For example: card number is `n`, remember time factor is `f`, then the total remember time is:
+
+`` t = min((n + 4 * ((float)(255 - f)) / 255) * 2, 5n)``
+
+the time calculated by factor is multiplied by 2 means give player double time to remember, but the limitation is 5 sec / card.
+
+###Represend time factor
+similar to remember time factor.
+
 
 #孩子，记住它
 锻炼孩子的记忆力
@@ -103,3 +114,13 @@ At last, we use the easiest way to calculate the score used to judge whether pla
 1. 规定时间内成功完成，晋级，否则降级。
 + TODO 制定更复杂的分数计算和升降规则 ～普啦普啦普啦～～
 
+###记忆时间因子
+每个玩家拥有一个记忆时间因子`(uint_8, 0~255)`用于计算他/她记住一张卡片需要的时间。
+例如：`n`张卡片，记忆时间因子为`f`，则给予玩家的记忆时间为：
+
+`` t = min((n + 4 * ((float)(255 - f)) / 255) * 2, 5n)``
+
+使用因子计算得到的时间乘了2是为了给玩家两倍的时间，但最终不能超过每张卡片5秒的限制
+
+###复现时间因子
+和记忆时间因子类似。
