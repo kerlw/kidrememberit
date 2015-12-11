@@ -346,16 +346,22 @@ void GameScene::onRepresentTimerDone(float left) {
 		left = 0;
 
 	UserData::getInstance()->addScore(1);	//TODO calculate the real score
+	int ret = UserData::getInstance()->toTheNextDifficulty();
 	UserData::getInstance()->save();
 
-	auto dlg = DialogBuilder::create(this, this)->setPadding(80, 100, 80, 180)
-			->setMessage("Congratulations!!")
-			->setPositiveButton("Next Level", "")
-			->setNegativeButton("Quit", "")
-			->build();
+	if (!ret) {
+		auto dlg = DialogBuilder::create(this, this)->setPadding(180, 100, 180, 180)
+				->setMessage("Congratulations!!")
+				->setPositiveButton("Next Level", "")
+				->setNegativeButton("Quit", "")
+				->build();
+		if (dlg)
+			dlg->show();
+	} else {
+		//TODO tips player there is no more difficulty
+		GameController::getInstance()->leaveScene();
+	}
 
-	if (dlg)
-		dlg->show();
 }
 
 bool GameScene::onTouchBegan(Touch *touch, Event *unused_event) {

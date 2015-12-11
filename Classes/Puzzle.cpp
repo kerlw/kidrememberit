@@ -33,9 +33,8 @@ void PuzzleData::resetUserData(const UserData* usr) {
 bool PuzzleData::init(const UserData* usr) {
 	type = PuzzleType::PT_REMEMBER_AND_REPRESENT; //(PuzzleType) (usr->score / SCORE_RANK);
 
-	size = 5 + usr->score / 8;
-	card_types = 2 + usr->score % 8;
-	card_types = std::min(std::max(card_types, (uint8_t)(size / 3)), size);
+	size = usr->card_numbers;
+	card_types = usr->card_types;
 	if (size > 0) {
 		data = new uint8_t[size];
 		memset(data, 0, size);

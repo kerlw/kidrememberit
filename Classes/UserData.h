@@ -22,12 +22,19 @@ public:
 
 	void addScore(const uint16_t& value);
 
+	/**
+	 * @return 0 : success, -1 : no more difficulty level
+	 */
+	int toTheNextDifficulty();
+
 private:
 	UserData();
 
 public:
 	std::string name;
 	uint16_t score;
+	uint8_t card_numbers;
+	uint8_t card_types;
 	uint8_t represent_time_factor;
 	uint8_t remember_time_factor;
 };
