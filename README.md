@@ -64,6 +64,19 @@ the time calculated by factor is multiplied by 2 means give player double time t
 similar to remember time factor.
 
 
+##Version 1 Test Result
+commit 3b4217a61937b4689baefcd32ef0465ae31818e1
+
+I've give this version to my daughter, and she has played no more than 5 minutes, then lost interest.
+
+I guess there are two points should be improved:
+
+1. Need tutorial to tell players how to play this game, and draw their attention to the count down timer.
+2. increase types would greatly increase the difficulty for the beginners.
+
+Further more, only 1 type of puzzle would make player lost interest sooner, I think I need to blend the tow kinds of game(step 1 & step 2). And maybe use 0-9 or A-Z instead of animals would be easier for player.
+
+
 #孩子，记住它
 锻炼孩子的记忆力
 
@@ -124,3 +137,16 @@ similar to remember time factor.
 
 ###复现时间因子
 和记忆时间因子类似。
+
+##版本1 测试结果
+commit 3b4217a61937b4689baefcd32ef0465ae31818e1
+
+我女儿试玩了第一个版本不到5分钟就失去了兴趣
+
+我认为有两点需要改进:
+
+1. 需要指导关卡来告诉玩家如何玩这个游戏，并提醒他们注意倒计时
+2. 对于初级玩家而言，增加卡片的种类会极大的增大游戏难度
+
+另外，仅有一种游戏类型会让玩家更快失去兴趣，我想我需要把两种游戏形式融合在一起。而使用数字或字母应该比使用动物更简单一些。
+
