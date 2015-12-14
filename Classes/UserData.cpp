@@ -49,6 +49,8 @@ void UserData::load() {
 		return;
 
 	score = 0;
+	card_numbers = 0;
+	card_types = 0;
 	remember_time_factor = 0;
 	represent_time_factor = 0;
 
@@ -89,6 +91,8 @@ void UserData::save() {
 	usr.AddMember(KEY_SCORE, score, allocator);
 	usr.AddMember(KEY_REM_FACTOR, remember_time_factor, allocator);
 	usr.AddMember(KEY_REP_FACTOR, represent_time_factor, allocator);
+	usr.AddMember(KEY_CARD_NUMBERS, card_numbers, allocator);
+	usr.AddMember(KEY_CARD_TYPES, card_types, allocator);
 
 	rapidjson::StringBuffer buffer;
 	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
