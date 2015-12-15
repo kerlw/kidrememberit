@@ -76,6 +76,9 @@ I guess there are two points should be improved:
 
 Further more, only 1 type of puzzle would make player lost interest sooner, I think I need to blend the tow kinds of game(step 1 & step 2). And maybe use 0-9 or A-Z instead of animals would be easier for player.
 
+##2015.12.15
+So, just has one type of game scene is too dull for children to keep on playing, it's time to add 'Step 2'
+
 
 #孩子，记住它
 锻炼孩子的记忆力
@@ -150,3 +153,5 @@ commit 3b4217a61937b4689baefcd32ef0465ae31818e1
 
 另外，仅有一种游戏类型会让玩家更快失去兴趣，我想我需要把两种游戏形式融合在一起。而使用数字或字母应该比使用动物更简单一些。
 
+##2015.12.15
+仅有一种游戏类型对孩子来说太单调无趣了，是时候增加第二种类型了。
