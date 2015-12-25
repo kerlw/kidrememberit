@@ -16,7 +16,7 @@ class Card;
 
 USING_NS_CC;
 
-class CardBar: public NodeGrid {
+class CardBar: public Node {
 public:
 	CardBar();
 	virtual ~CardBar();

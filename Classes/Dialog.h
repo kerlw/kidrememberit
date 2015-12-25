@@ -15,6 +15,7 @@
 USING_NS_CC;
 
 class Dialog;
+class EventListner;
 
 enum class DialogButtonType {
 	DBT_POSITIVE,
@@ -92,7 +93,7 @@ private:
 class Dialog : public LayerColor {
 	friend class DialogBuilder;
 public:
-	virtual ~Dialog() {};
+	virtual ~Dialog();
 
 	void show() {	this->setVisible(true);		}
 	void hide() {	this->setVisible(false); 	}
@@ -105,15 +106,19 @@ public:
 	}
 	DialogButtonType result() { return m_eResult; }
 
+    virtual bool onTouchBegan(Touch *touch, Event *unused_event) override;
+	virtual void onTouchMoved(Touch *touch, Event *unused_event) override;
+	virtual void onTouchEnded(Touch *touch, Event *unused_event) override;
+	virtual void onTouchCancelled(Touch *touch, Event *unused_event) override;
+
 private:
-	Dialog(DialogEventListener* listener) : m_eResult(DialogButtonType::DBT_NEGATIVE) , m_pListener(listener) {}
+	Dialog(DialogEventListener* listener);
 	void onPositiveButtonClicked(Ref* sender);
 	void onNegativeButtonClicked(Ref* sender);
 
 protected:
 	DialogButtonType m_eResult;
 	DialogEventListener* m_pListener;
-
 };
 
 #endif /* DIALOG_H_ */

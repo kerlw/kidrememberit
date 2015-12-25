@@ -50,6 +50,13 @@ Dialog* DialogBuilder::build() {
 	body->setPosition(Vec2(visibleSize.width / 2 + (m_iPaddingLeft - m_iPaddingRight),
 							visibleSize.height / 2 + (m_iPaddingBottom - m_iPaddingTop)));
 
+	if (!m_strMessage.empty()) {
+		auto label = Label::createWithTTF(m_strMessage, "fonts/Marker Felt.ttf", 120);
+		label->setTextColor(Color4B(0x6f, 0x26, 0xf6, 0xff));
+		label->setPosition(Vec2(bodySize.width / 2, bodySize.height / 2 + kButtonHeight));
+		body->addChild(label);
+	}
+
 	int btnCount = 0;
 	if (!m_strPositive.empty())
 		btnCount++;
@@ -94,6 +101,23 @@ Dialog* DialogBuilder::build() {
 	return pRet;
 }
 
+Dialog::Dialog(DialogEventListener* listener)
+	: m_eResult(DialogButtonType::DBT_NEGATIVE) , m_pListener(listener) {
+
+	auto l = EventListenerTouchOneByOne::create();
+	l->setSwallowTouches(true);
+
+	l->onTouchBegan = CC_CALLBACK_2(Dialog::onTouchBegan, this);
+	l->onTouchMoved = CC_CALLBACK_2(Dialog::onTouchMoved, this);
+	l->onTouchEnded = CC_CALLBACK_2(Dialog::onTouchEnded, this);
+	l->onTouchCancelled = CC_CALLBACK_2(Dialog::onTouchCancelled, this);
+
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(l, this);
+
+}
+
+Dialog::~Dialog() {
+}
 
 void Dialog::onPositiveButtonClicked(Ref* sender) {
 	if (m_pListener)
@@ -104,4 +128,14 @@ void Dialog::onNegativeButtonClicked(Ref* sender) {
 	if (m_pListener)
 		m_pListener->onDialogButtonClicked(this, DialogButtonType::DBT_NEGATIVE);
 
+}
+
+bool Dialog::onTouchBegan(Touch *touch, Event *unused_event) {
+	return true;
+}
+void Dialog::onTouchMoved(Touch *touch, Event *unused_event) {
+}
+void Dialog::onTouchEnded(Touch *touch, Event *unused_event) {
+}
+void Dialog::onTouchCancelled(Touch *touch, Event *unused_event) {
 }
